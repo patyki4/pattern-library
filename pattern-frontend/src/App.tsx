@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Pattern } from "./types/Pattern";
 
 function App() {
+  const [search, setSearch] = useState("");
   const [patterns, setPatterns] = useState<Pattern[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -10,14 +11,16 @@ function App() {
   const [difficulty, setDifficulty] = useState("");
 
   const loadPatterns = () => {
-    fetch("http://127.0.0.1:8000/patterns")
+    fetch(
+  `http://127.0.0.1:8000/patterns?search=${encodeURIComponent(search)}`
+  )
       .then((res) => res.json())
       .then((data) => setPatterns(data));
   };
 
   useEffect(() => {
     loadPatterns();
-  }, []);
+  }, [search]);
 
   const createPattern = async () => {
     const response = await fetch(
@@ -56,8 +59,35 @@ function App() {
       }}
     >
       <h1>Pattern Library</h1>
+      <section style={{ marginBottom: "2rem" }}></section>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search patterns..."
+          style={{
+            width: "100%",
+            marginBottom: "1rem",
+          }}
+        />
+      <section>
+        {patterns.map((pattern) => (
+          <article
+            key={pattern.id}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            <h2>{pattern.title}</h2>
+            <p style={{ whiteSpace: "pre-wrap" }}>
+              {pattern.content}
+            </p>
+          </article>
+        ))}
+      </section>
 
-      <section style={{ marginBottom: "2rem" }}>
         <h2>Add Pattern</h2>
 
         <input
@@ -114,26 +144,6 @@ function App() {
         <button onClick={createPattern}>
           Save Pattern
         </button>
-      </section>
-
-      <section>
-        {patterns.map((pattern) => (
-          <article
-            key={pattern.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              padding: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
-            <h2>{pattern.title}</h2>
-            <p style={{ whiteSpace: "pre-wrap" }}>
-              {pattern.content}
-            </p>
-          </article>
-        ))}
-      </section>
     </main>
   );
 }
