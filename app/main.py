@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+from typing import List, Optional
 
 from app.database import SessionLocal, engine
 from app.models import Base, Pattern
@@ -36,6 +37,7 @@ class PatternCreate(BaseModel):
     definitions: str | None = None
     craft_type: str | None = None
     difficulty: str | None = None
+    tags: List[str] = []
 
 class PatternUpdate(BaseModel):
     title: str
@@ -43,6 +45,32 @@ class PatternUpdate(BaseModel):
     definitions: str | None = None
     craft_type: str | None = None
     difficulty: str | None = None
+    tags: List[str] = []
+
+class TagResponse(BaseModel):
+    name: str
+
+    model_config = {
+        "from_attributes": True
+}
+    
+class PatternResponse(BaseModel):
+    id: int
+
+    title: str
+    content: str
+    definitions: str | None
+
+    craft_type: str | None
+    difficulty: str | None
+
+    thumbnail_url: str | None
+
+    tags: list[TagResponse]
+
+    model_config = {
+        "from_attributes": True
+    }
 
 @app.post("/patterns")
 def add_pattern(pattern: PatternCreate, db: Session = Depends(get_db)):
@@ -52,7 +80,8 @@ def add_pattern(pattern: PatternCreate, db: Session = Depends(get_db)):
         pattern.content,
         pattern.definitions,
         pattern.craft_type,
-        pattern.difficulty
+        pattern.difficulty,
+        pattern.tags
         )
 
 @app.put("/patterns/{pattern_id}")
@@ -92,7 +121,7 @@ def remove_pattern(
     return {"message": "Pattern deleted"}
 
 
-@app.get("/patterns")
+@app.get("/patterns", response_model=list[PatternResponse])
 def list_patterns(
     search: str | None = Query(default=None),
     db: Session = Depends(get_db),

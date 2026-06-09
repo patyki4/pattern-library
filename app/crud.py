@@ -1,8 +1,28 @@
 from sqlalchemy.orm import Session
-from app.models import Pattern
+from app.models import Pattern, Tag
 
-def create_pattern(db: Session, title: str, content: str, definitions: str, craft_type: str, difficulty: str):
-    pattern = Pattern(title=title, content=content, definitions=definitions, craft_type=craft_type, difficulty=difficulty)
+def create_pattern(
+    db: Session, 
+    title: str, 
+    content: str, 
+    definitions: str, 
+    craft_type: str, 
+    difficulty: str, 
+    tags,
+):
+    pattern = Pattern(
+        title=title, 
+        content=content, 
+        definitions=definitions, 
+        craft_type=craft_type, 
+        difficulty=difficulty)
+    for tag_name in tags:
+        tag = get_or_create_tag(
+            db,
+            tag_name.strip().lower(),
+        )
+        pattern.tags.append(tag)
+        
     db.add(pattern)
     db.commit()
     db.refresh(pattern)
@@ -44,3 +64,24 @@ def delete_pattern(db, pattern_id):
     db.commit()
 
     return True
+
+def get_or_create_tag(
+    db,
+    tag_name,
+):
+    tag = (
+        db.query(Tag)
+        .filter(Tag.name == tag_name)
+        .first()
+    )
+
+    if tag:
+        return tag
+
+    tag = Tag(name=tag_name)
+
+    db.add(tag)
+    db.commit()
+    db.refresh(tag)
+
+    return tag
