@@ -1,3 +1,4 @@
+import type { Pattern } from "../types/Pattern";
 
 const API_URL = "http://127.0.0.1:8000/patterns";
 
@@ -17,7 +18,7 @@ export async function getPatterns() {
     craftType: p.craftType,
     thumbnailUrl: p.thumbnailUrl,
     difficulty: p.difficulty,
-    tags: p.tags,
+    tags: (p.tags ?? []).map((tag: any) => tag.name),
   }));
 }
 
@@ -43,23 +44,14 @@ export async function createPattern(pattern: any) {
 }
 
 //update
-export async function updatePattern(pattern: any) {
+export async function updatePattern(pattern: Pattern): Promise<Pattern> {
   const res = await fetch(`${API_URL}/${pattern.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: pattern.title,
-      content: pattern.content,
-      definitions: pattern.definitions,
-      craftType: pattern.craftType,
-      thumbnailUrl: pattern.thumbnailUrl,
-      difficulty: pattern.difficulty,
-      tags: pattern.tags?.map((t: any) => t.name) ?? [],
-    }),
+    body: JSON.stringify(pattern),
   });
 
-  const data = await res.json();
-  return data;
+  return await res.json();
 }
 
 

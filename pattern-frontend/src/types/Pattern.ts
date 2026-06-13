@@ -12,5 +12,5 @@ export interface Pattern {
   thumbnailUrl: string | null;
   createdAt: string;
 
-  tags: Tag[];
+  tags: string[];
 }

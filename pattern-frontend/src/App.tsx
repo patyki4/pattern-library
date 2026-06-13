@@ -7,9 +7,7 @@ import {
   TextInput,
   Textarea,
   Card,
-  Badge,
   Group,
-  Stack,
   Title,
   Image,
   Modal
@@ -106,9 +104,10 @@ function App() {
               >
                 <Card.Section>
                   <Image 
-                    src="https://placehold.co/200x200"
+                    src={pattern.thumbnailUrl}
                     height={150}
                     radius={5}
+                    fallbackSrc="https://placehold.co/400x300?text=No+Image"
                   />
                 </Card.Section>
                 <Card.Section>
