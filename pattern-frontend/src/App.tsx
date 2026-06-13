@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Pattern } from "./types/Pattern";
+import { getPatterns, createPattern, updatePattern } from "./api/patterns";
 import {
   Button,
   Text,
@@ -25,52 +26,21 @@ function App() {
   const [tagsInput, setTagsInput] = useState("");
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const loadPatterns = () => {
-    fetch(
-  `http://127.0.0.1:8000/patterns?search=${encodeURIComponent(search)}`
-  )
-      .then((res) => res.json())
-      .then((data) => setPatterns(data));
-  };
+  const handleUpdatePattern = async (updated: Pattern) => {
+  const saved = await updatePattern(updated);
+
+  setPatterns((prev) =>
+    prev.map((p) =>
+      p.id === saved.id ? saved : p
+    )
+  );
+};
 
   useEffect(() => {
-    loadPatterns();
+    getPatterns().then(setPatterns);
   }, [search]);
-
-  const createPattern = async () => {
-    const response = await fetch(
-      "http://127.0.0.1:8000/patterns",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          definitions,
-          craft_type,
-          difficulty,
-          tags: tagsInput
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
-        }),
-      }
-    );
-
-    if (response.ok) {
-      setTitle("");
-      setContent("");
-      setDefinitions("");
-      setCraftType("");
-      setDifficulty("");
-      loadPatterns();
-      setTagsInput("");
-    }
-  };
-
 
   const numCols = 3;
 
@@ -142,6 +112,11 @@ function App() {
                   />
                 </Card.Section>
                 <Card.Section>
+                  <Text>
+                    {pattern.title}
+                  </Text>
+                </Card.Section>
+                <Card.Section>
                   <Text lineClamp={6}>
                     {pattern.content}
                   </Text>
@@ -151,63 +126,128 @@ function App() {
           </div>
         ))}
       </div>
+
       <Modal
         opened={expandedPattern !== null}
-        onClose={() => setExpandedPattern(null)}
-        size="95%"
+        onClose={() => {
+          setExpandedPattern(null);
+          setIsEditing(false);
+        }}
+        size="90%"
         centered
       >
         {expandedPattern && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "80vh",
-            }}
-          >
-            {/* Thumbnail */}
-            {expandedPattern.thumbnail_url && (
-              <img
-                src={expandedPattern.thumbnail_url}
-                alt=""
-                style={{
-                  width: "100%",
-                  maxHeight: "250px",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                  marginBottom: "1rem",
-                }}
-              />
-            )}
-
-            {/* Scrollable content */}
+          <div style={{ display: "flex", flexDirection: "column", height: "80vh" }}>
+          {!isEditing && (
             <div
               style={{
-                flex: 1,
-                overflowY: "auto",
-                paddingRight: "0.5rem",
+                display: "flex",
+                flexDirection: "column",
+                height: "80vh",
               }}
             >
-              <Title order={2}>{expandedPattern.title}</Title>
+              {/* Thumbnail */}
+              {expandedPattern.thumbnailUrl && (
+                <img
+                  src={expandedPattern.thumbnailUrl}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    maxHeight: "250px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                    marginBottom: "1rem",
+                  }}
+                />
+              )}
 
-              <Text style={{ whiteSpace: "pre-wrap" }}>
-                {expandedPattern.content}
-              </Text>
-            </div>
-
-            {/* Footer */}
-            <Group justify="flex-end" mt="md">
-              <Button
-                onClick={() => {
-                  // future edit functionality
+              {/* Scrollable content */}
+              <div
+                style={{
+                  flex: 1,
+                  overflowY: "auto",
+                  paddingRight: "0.5rem",
                 }}
-              >
-                Edit
-              </Button>
-            </Group>
+              ><Title order={2}>{expandedPattern.title}</Title>
+                <Text style={{ whiteSpace: "pre-wrap" }}>
+                  {expandedPattern.content}
+                </Text>
+              </div>
+
+              {/* Footer */}
+              <Group justify="flex-end" mt="md">
+                <Button
+                  onClick={() => setIsEditing(true)}>
+                  edit
+                </Button>
+              </Group>
+            </div> 
+          )}
+
+          {isEditing && expandedPattern && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <TextInput
+                label="Pattern Title"
+                value={expandedPattern.title ?? "title"}
+                onChange={(e) =>
+                  setExpandedPattern({
+                    ...expandedPattern,
+                    title: e.currentTarget.value,
+                  })
+                }
+              />
+              <TextInput
+                label="Thumbnail URL"
+                value={expandedPattern.thumbnailUrl ?? ""}
+                onChange={(e) =>
+                  setExpandedPattern({
+                    ...expandedPattern,
+                    thumbnailUrl: e.currentTarget.value,
+                  })
+                }
+              />
+
+              <Textarea
+                label="Content"
+                minRows={12}
+                autosize
+                value={expandedPattern.content}
+                onChange={(e) =>
+                  setExpandedPattern({
+                    ...expandedPattern,
+                    content: e.currentTarget.value,
+                  })
+                }
+              />
+              <Group justify="flex-end">
+                <Button variant="default" onClick={() => setIsEditing(false)}>
+                  Cancel
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    if (!expandedPattern) return;
+
+                    handleUpdatePattern({
+                      ...expandedPattern,
+                      tags: (expandedPattern.tags ?? []).map((t: any) =>
+                        typeof t === "string" ? t : t.name
+                      ),
+                    });
+
+                    setIsEditing(false);
+                    setExpandedPattern(null);
+                  }}
+                >
+                  Save
+                </Button>
+              </Group>
+            </div>
+          )}
           </div>
         )}
       </Modal>
+
       <Card shadow="sm" padding="md" radius="md" color="blue">
         <Title order={3}>
           Add Pattern

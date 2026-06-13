@@ -6,16 +6,18 @@ def create_pattern(
     title: str, 
     content: str, 
     definitions: str, 
-    craft_type: str, 
+    craftType: str, 
     difficulty: str, 
+    thumbnailUrl: str,
     tags,
 ):
     pattern = Pattern(
         title=title, 
         content=content, 
         definitions=definitions, 
-        craft_type=craft_type, 
-        difficulty=difficulty)
+        craft_type=craftType, 
+        difficulty=difficulty,
+        thumbnail_url=thumbnailUrl)
     for tag_name in tags:
         tag = get_or_create_tag(
             db,
@@ -34,8 +36,9 @@ def update_pattern(
     title,
     content,
     definitions,
-    craft_type,
+    craftType,
     difficulty,
+    thumbnailUrl,
 ):
     pattern = db.get(Pattern, pattern_id)
 
@@ -45,8 +48,9 @@ def update_pattern(
     pattern.title = title
     pattern.content = content
     pattern.definitions = definitions
-    pattern.craft_type = craft_type
+    pattern.craft_type = craftType
     pattern.difficulty = difficulty
+    pattern.thumbnail_url = thumbnailUrl
 
     db.commit()
     db.refresh(pattern)

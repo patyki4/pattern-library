@@ -7,10 +7,10 @@ export interface Pattern {
   title: string;
   content: string;
   definitions: string | null;
-  craft_type: string | null;
+  craftType: string
   difficulty: string | null;
-  thumbnail_url: string | null;
-  created_at: string;
+  thumbnailUrl: string | null;
+  createdAt: string;
 
   tags: Tag[];
 }
