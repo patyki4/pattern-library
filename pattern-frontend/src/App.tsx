@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Pattern } from "./types/Pattern";
 import { getPatterns, createPattern, updatePattern } from "./api/patterns";
+import { PatternModal } from "./components/PatternModal";
 import {
   Button,
   Text,
@@ -126,7 +127,20 @@ function App() {
         ))}
       </div>
 
-      <Modal
+      <PatternModal
+        pattern={expandedPattern}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        setPattern={setExpandedPattern}
+        onSave={handleUpdatePattern}
+        opened={expandedPattern !== null}
+        onClose={() => {
+          setExpandedPattern(null);
+          setIsEditing(false);
+        }}
+      />
+
+      {/* <Modal
         opened={expandedPattern !== null}
         onClose={() => {
           setExpandedPattern(null);
@@ -137,51 +151,6 @@ function App() {
       >
         {expandedPattern && (
           <div style={{ display: "flex", flexDirection: "column", height: "80vh" }}>
-          {!isEditing && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "80vh",
-              }}
-            >
-              {/* Thumbnail */}
-              {expandedPattern.thumbnailUrl && (
-                <img
-                  src={expandedPattern.thumbnailUrl}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    maxHeight: "250px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                    marginBottom: "1rem",
-                  }}
-                />
-              )}
-
-              {/* Scrollable content */}
-              <div
-                style={{
-                  flex: 1,
-                  overflowY: "auto",
-                  paddingRight: "0.5rem",
-                }}
-              ><Title order={2}>{expandedPattern.title}</Title>
-                <Text style={{ whiteSpace: "pre-wrap" }}>
-                  {expandedPattern.content}
-                </Text>
-              </div>
-
-              {/* Footer */}
-              <Group justify="flex-end" mt="md">
-                <Button
-                  onClick={() => setIsEditing(true)}>
-                  edit
-                </Button>
-              </Group>
-            </div> 
-          )}
 
           {isEditing && expandedPattern && (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -245,7 +214,7 @@ function App() {
           )}
           </div>
         )}
-      </Modal>
+      </Modal> */}
 
       <Card shadow="sm" padding="md" radius="md" color="blue">
         <Title order={3}>
