@@ -20,12 +20,36 @@ function App() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [definitions, setDefinitions] = useState("");
-  const [craft_type, setCraftType] = useState("");
+  const [craftType, setCraftType] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+
+  const handleCreatePattern = async () => {
+      const newPattern = await createPattern({
+          title,
+          content,
+          definitions,
+          craftType,
+          difficulty,
+          thumbnailUrl,
+          tags: tagsInput
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean),
+          });
+      setPatterns((prev) => [...prev, newPattern]);
+      // setTitle("");
+      // setContent("");
+      // setDefinitions("");
+      // setCraftType("");
+      // setDifficulty("");
+      // setTagsInput("");
+      // setThumbnailUrl("");
+  };
 
   const handleUpdatePattern = async (updated: Pattern) => {
   const saved = await updatePattern(updated);
@@ -49,7 +73,7 @@ function App() {
   );
   
   return (
-    <div> 
+    <div style={{overflowX : "hidden"}}> 
       <div style={{ width: "100%", padding: "var(--mantine-spacing-sm)"}}>
         <Title order={1}>
           Pattern Library
@@ -59,7 +83,7 @@ function App() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search patterns..."
-            style={{ marginBottom: "3rem" }}
+            style={{ marginBottom: "1rem" }}
           />
       </div>
       <div style={{ width: "100vw", overflow: "visible", marginTop: 50,  marginBottom: "5rem"  }}>
@@ -228,8 +252,8 @@ function App() {
           onChange={(e) => setTitle(e.currentTarget.value)}
         />
 
-        <input
-          value={craft_type}
+        <TextInput
+          value={craftType}
           onChange={(e) => setCraftType(e.target.value)}
           placeholder="craft type"
           style={{
@@ -238,7 +262,7 @@ function App() {
           }}
         />
 
-        <input
+        <TextInput
           value={definitions}
           onChange={(e) => setDefinitions(e.target.value)}
           placeholder="definitions"
@@ -248,7 +272,7 @@ function App() {
           }}
         />
 
-        <textarea
+        <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Pattern instructions"
@@ -259,7 +283,7 @@ function App() {
           }}
         />
 
-        <input
+        <TextInput
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
           placeholder="difficulty"
@@ -269,7 +293,7 @@ function App() {
           }}
         />
 
-        <input
+        <TextInput
           value={tagsInput}
           onChange={(e) => setTagsInput(e.target.value)}
           placeholder="tags (comma separated)"
@@ -279,7 +303,17 @@ function App() {
           }}
         />
 
-        <button onClick={createPattern}>
+        <TextInput
+          value={thumbnailUrl}
+          onChange={(e) => setThumbnailUrl(e.target.value)}
+          placeholder="thumbnail url"
+          style={{
+            width: "100%",
+            marginBottom: "1rem",
+          }}
+        />
+
+        <button onClick={handleCreatePattern}>
           Save Pattern
         </button>
       </Card>
