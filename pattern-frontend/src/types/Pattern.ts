@@ -11,6 +11,15 @@ export interface Pattern {
   difficulty: string | null;
   thumbnailUrl: string | null;
   createdAt: string;
+  tags: string[];
+}
 
+export interface NewPattern {
+  title: string;
+  content: string;
+  definitions?: string;
+  craftType?: string;
+  thumbnailUrl?: string;
+  difficulty?: string;
   tags: string[];
 }

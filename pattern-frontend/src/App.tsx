@@ -42,24 +42,24 @@ function App() {
             .filter(Boolean),
           });
       setPatterns((prev) => [...prev, newPattern]);
-      // setTitle("");
-      // setContent("");
-      // setDefinitions("");
-      // setCraftType("");
-      // setDifficulty("");
-      // setTagsInput("");
-      // setThumbnailUrl("");
+      setTitle("");
+      setContent("");
+      setDefinitions("");
+      setCraftType("");
+      setDifficulty("");
+      setTagsInput("");
+      setThumbnailUrl("");
   };
 
   const handleUpdatePattern = async (updated: Pattern) => {
-  const saved = await updatePattern(updated);
+    const saved = await updatePattern(updated);
 
-  setPatterns((prev) =>
-    prev.map((p) =>
-      p.id === saved.id ? saved : p
-    )
-  );
-};
+    setPatterns((prev) =>
+      prev.map((p) =>
+        p.id === saved.id ? saved : p
+      )
+    );
+  };
 
   useEffect(() => {
     getPatterns().then(setPatterns);

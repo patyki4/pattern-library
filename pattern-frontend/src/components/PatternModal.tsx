@@ -94,16 +94,6 @@ return (
                   })
                 }
               />
-              <TextInput
-                label="Thumbnail URL"
-                value={pattern.thumbnailUrl ?? ""}
-                onChange={(e) =>
-                  setPattern({
-                    ...pattern,
-                    thumbnailUrl: e.currentTarget.value,
-                  })
-                }
-              />
 
               <Textarea
                 label="Content"
@@ -117,6 +107,30 @@ return (
                   })
                 }
               />
+
+              <TextInput
+                label="tags"
+                value={pattern.tags.join(", ") ?? ""}
+                onChange={(e) =>
+                  setPattern({
+                    ...pattern,
+                    tags: e.currentTarget.value.split(",").map((t) => t.trim())
+                    .filter(Boolean),
+                  })
+                }
+              />
+
+              <TextInput
+                label="Thumbnail URL"
+                value={pattern.thumbnailUrl ?? ""}
+                onChange={(e) =>
+                  setPattern({
+                    ...pattern,
+                    thumbnailUrl: e.currentTarget.value,
+                  })
+                }
+              />
+
               <Group justify="flex-end">
                 <Button variant="default" onClick={() => setIsEditing(false)}>
                   Cancel
