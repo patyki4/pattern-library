@@ -17,6 +17,14 @@ type PatternModalProps = {
 
   opened: boolean;
   onClose: () => void;
+  sideBySide: boolean;
+  setSideBySide: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  pinThumbnail: boolean;
+  setPinThumbnail: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
 };
 
 export function PatternModal({
@@ -27,6 +35,10 @@ export function PatternModal({
   onSave,
   opened,
   onClose,
+  sideBySide,
+  setSideBySide,
+  pinThumbnail,
+  setPinThumbnail,
 }: PatternModalProps) {
 
 return (
@@ -40,25 +52,61 @@ return (
             <div style={{ display: "flex", flexDirection: "column", height: "80vh", gap: 12 }}>
                 <div
                 style={{
-                    display: "flex",
-                    flexDirection: "column",
+                    display:"flex",
+                    flex: "1",
+                    overflowY: "auto",
+                    flexDirection: sideBySide ? "row" : "column",
                     height: "80vh",
+                    position: "relative",
                 }}
                 >
-                    {/* Thumbnail */}
-                    {pattern.thumbnailUrl && (
-                        <img
-                        src={pattern.thumbnailUrl}
-                        alt=""
-                        style={{
-                            width: "100%",
-                            maxHeight: "250px",
-                            objectFit: "cover",
-                            borderRadius: "8px",
-                            marginBottom: "1rem",
-                        }}
-                        />
-                    )}
+                    <div style={{
+                        position: pinThumbnail ? "sticky" : "relative",
+                        top: 0,
+                        zIndex: 10
+                    }} >
+                        {/* Thumbnail */}
+                        {pattern.thumbnailUrl && (
+                            <img
+                            src={pattern.thumbnailUrl}
+                            alt=""
+                            style={{
+                                width: "100%",
+                                maxHeight: "250px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                marginBottom: "1rem",
+                            }}
+                            />
+                        )}
+                            <Button
+                                size="xs"
+                                style={{
+                                    position: "absolute",
+                                    top: 8,
+                                    right: 8,
+                                    zIndex: 11
+                                }}
+                                onClick={() =>
+                                    setSideBySide((prev) => !prev)
+                                }
+                                >
+                                Layout
+                            </Button>
+
+                            <Button
+                                size="xs"
+                                style={{
+                                    position: "absolute",
+                                    top: 8,
+                                    right: 80,
+                                    zIndex:11
+                                }}
+                                onClick={() => setPinThumbnail((prev) => !prev)}
+                                >
+                                {pinThumbnail ? "unpin" : "pin"}
+                            </Button>
+                    </div>
 
                     <div
                         style={{
@@ -71,15 +119,18 @@ return (
                             {pattern.content}
                         </Text>
                     </div>
+                </div>
 
                     {/* Footer */}
-                    <Group justify="flex-end" mt="md">
+                    <Group justify="flex-end" style={{
+                        borderTop: "1px solid #444",
+                        paddingTop: "6px",
+                        }}>
                         <Button
                             onClick={() => setIsEditing(true)}>
                             edit
                         </Button>
                     </Group>
-                </div>
             </div>
         )}
         {pattern && isEditing && (

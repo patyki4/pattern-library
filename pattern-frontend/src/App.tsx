@@ -27,6 +27,8 @@ function App() {
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [sideBySide, setSideBySide] = useState(false);
+  const [pinThumbnail, setPinThumbnail] = useState(false);
 
   const handleCreatePattern = async () => {
       const newPattern = await createPattern({
@@ -162,6 +164,10 @@ function App() {
           setExpandedPattern(null);
           setIsEditing(false);
         }}
+        sideBySide={sideBySide}
+        setSideBySide={setSideBySide}
+        pinThumbnail={pinThumbnail}
+        setPinThumbnail={setPinThumbnail}
       />
 
       {/* <Modal
