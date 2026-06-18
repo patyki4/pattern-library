@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
     <MantineProvider
       forceColorScheme="dark"
       theme={{
-        primaryColor: "teal",
+        primaryColor: "indigo",
       }}
     >
       <App />

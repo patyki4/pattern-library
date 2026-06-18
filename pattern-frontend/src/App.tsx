@@ -11,7 +11,11 @@ import {
   Group,
   Title,
   Image,
-  Modal
+  Modal,
+  MantineProvider,
+  createTheme,
+  useMantineColorScheme,
+  ActionIcon
 } from "@mantine/core";
 
 function App() {
@@ -30,6 +34,14 @@ function App() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [sideBySide, setSideBySide] = useState(false);
   //const [pinThumbnail, setPinThumbnail] = useState(false);
+
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  
+  setColorScheme(colorScheme === "dark" ? "light" : "dark");
+
+  const toggleTheme = () => {
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  };
 
   const handleCreatePattern = async () => {
       const newPattern = await createPattern({
@@ -78,6 +90,13 @@ function App() {
     getPatterns().then(setPatterns);
   }, [search]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-mantine-color-scheme",
+      colorScheme
+    );
+  }, [colorScheme]);
+
   const numCols = 3;
 
   const rows = Array.from(
@@ -91,6 +110,13 @@ function App() {
         <Title order={1}>
           Pattern Library
         </Title>
+        <ActionIcon
+          onClick={toggleTheme}
+          variant="subtle"
+          size="lg"
+        >
+          {colorScheme === "dark" ? "☀️" : "🌙"}
+        </ActionIcon>
         <section style={{ marginBottom: "1rem" }}></section>
           <TextInput
             value={search}
