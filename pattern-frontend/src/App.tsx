@@ -25,10 +25,11 @@ function App() {
   const [tagsInput, setTagsInput] = useState("");
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
+  const [draftPattern, setDraftPattern] = useState<Pattern | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [sideBySide, setSideBySide] = useState(false);
-  const [pinThumbnail, setPinThumbnail] = useState(false);
+  //const [pinThumbnail, setPinThumbnail] = useState(false);
 
   const handleCreatePattern = async () => {
       const newPattern = await createPattern({
@@ -61,6 +62,16 @@ function App() {
         p.id === saved.id ? saved : p
       )
     );
+    setExpandedPattern(saved);
+    setDraftPattern(null);
+    setIsEditing(false);
+  };
+
+  const handleStartEditing = () => {
+    if (!expandedPattern) return;
+
+    setDraftPattern({ ...expandedPattern });
+    setIsEditing(true);
   };
 
   useEffect(() => {
@@ -154,10 +165,11 @@ function App() {
       </div>
 
       <PatternModal
-        pattern={expandedPattern}
+        pattern={isEditing ? draftPattern : expandedPattern}
         isEditing={isEditing}
+        onEdit={handleStartEditing}
         setIsEditing={setIsEditing}
-        setPattern={setExpandedPattern}
+        setPattern={setDraftPattern}
         onSave={handleUpdatePattern}
         opened={expandedPattern !== null}
         onClose={() => {
@@ -166,85 +178,7 @@ function App() {
         }}
         sideBySide={sideBySide}
         setSideBySide={setSideBySide}
-        pinThumbnail={pinThumbnail}
-        setPinThumbnail={setPinThumbnail}
       />
-
-      {/* <Modal
-        opened={expandedPattern !== null}
-        onClose={() => {
-          setExpandedPattern(null);
-          setIsEditing(false);
-        }}
-        size="90%"
-        centered
-      >
-        {expandedPattern && (
-          <div style={{ display: "flex", flexDirection: "column", height: "80vh" }}>
-
-          {isEditing && expandedPattern && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <TextInput
-                label="Pattern Title"
-                value={expandedPattern.title ?? "title"}
-                onChange={(e) =>
-                  setExpandedPattern({
-                    ...expandedPattern,
-                    title: e.currentTarget.value,
-                  })
-                }
-              />
-              <TextInput
-                label="Thumbnail URL"
-                value={expandedPattern.thumbnailUrl ?? ""}
-                onChange={(e) =>
-                  setExpandedPattern({
-                    ...expandedPattern,
-                    thumbnailUrl: e.currentTarget.value,
-                  })
-                }
-              />
-
-              <Textarea
-                label="Content"
-                minRows={12}
-                autosize
-                value={expandedPattern.content}
-                onChange={(e) =>
-                  setExpandedPattern({
-                    ...expandedPattern,
-                    content: e.currentTarget.value,
-                  })
-                }
-              />
-              <Group justify="flex-end">
-                <Button variant="default" onClick={() => setIsEditing(false)}>
-                  Cancel
-                </Button>
-
-                <Button
-                  onClick={() => {
-                    if (!expandedPattern) return;
-
-                    handleUpdatePattern({
-                      ...expandedPattern,
-                      tags: (expandedPattern.tags ?? []).map((t: any) =>
-                        typeof t === "string" ? t : t.name
-                      ),
-                    });
-
-                    setIsEditing(false);
-                    setExpandedPattern(null);
-                  }}
-                >
-                  Save
-                </Button>
-              </Group>
-            </div>
-          )}
-          </div>
-        )}
-      </Modal> */}
 
       <Card shadow="sm" padding="md" radius="md" color="blue">
         <Title order={3}>
