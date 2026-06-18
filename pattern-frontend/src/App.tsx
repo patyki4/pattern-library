@@ -130,7 +130,7 @@ function App() {
                   //zIndex: hoveredId === pattern.id ? 999 : 1,
                   boxShadow:
                     hoveredId === pattern.id
-                      ? "0 12px 30px rgba(0,0,0,0.18)"
+                      ? "0 12px 30px rgb(131, 168, 213)"
                       : undefined,
                   transition: "transform 200ms ease, box-shadow 200ms ease",
                   borderColor: "white"

@@ -67,20 +67,33 @@ return (
         }
         />
 
-        <Group justify="flex-end">
-        <Button variant="default" onClick={() => onCancel()}>
-            Cancel
-        </Button>
+        <Group
+            justify="flex-end"
+            style={{
+                flexShrink: 0,
+                position: "sticky",
+                bottom: 0,
 
-        <Button
-            onClick={() => {
-            if (!pattern) return;
+                padding: "6px 0",
+                background: "transparent",
+                // backdropFilter: "blur(6px)",
+                // WebkitBackdropFilter: "blur(6px)",
 
-            onSave(pattern);
-            }}
-        >
-            Save
-        </Button>
+                // borderTop: "1px solid rgba(60, 96, 123, 0.08)",
+                // boxShadow: "0 -6px 18px rgba(0,0,0,0.08)",
+            }}>
+            <Button variant="default" onClick={() => onCancel()}>
+                cancel
+            </Button>
+
+            <Button
+                color="indigo"
+                onClick={() => {
+                if (!pattern) return;
+                onSave(pattern);
+                }}>
+                save
+            </Button>
         </Group>
     </div>
 )}
