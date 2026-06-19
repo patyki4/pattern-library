@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Pattern } from "./types/Pattern";
 import { getPatterns, createPattern, updatePattern } from "./api/patterns";
 import { PatternModal } from "./components/PatternModal";
+import "./App.css"
 import {
   Button,
   Text,
@@ -125,7 +126,7 @@ function App() {
             style={{ marginBottom: "1rem" }}
           />
       </div>
-      <div style={{ width: "100vw", overflow: "visible", marginTop: 50,  marginBottom: "5rem"  }}>
+      <div style={{ width: "95vw", overflow: "visible", marginTop: 50,  marginBottom: "5rem"  }}>
         {rows.map((row, rowIndex) => (
           <div
             key={rowIndex}
@@ -149,21 +150,20 @@ function App() {
                   marginLeft: index === 0 ? 0 : -20,
                   marginBottom: -40,
                   position: "relative",
-                  transform:
-                    hoveredId === pattern.id
-                      ? "translateY(-6px) scale(1.04)"
-                      : "translateY(0px) scale(1)",
-                  //zIndex: hoveredId === pattern.id ? 999 : 1,
-                  boxShadow:
-                    hoveredId === pattern.id
-                      ? "0 12px 30px rgb(131, 168, 213)"
-                      : undefined,
-                  transition: "transform 200ms ease, box-shadow 200ms ease",
+                  // transform:
+                  //   hoveredId === pattern.id
+                  //     ? "translateY(-6px) scale(1.04)"
+                  //     : "translateY(0px) scale(1)",
+                  // boxShadow:
+                  //   hoveredId === pattern.id
+                  //     ? "0 12px 30px rgb(131, 168, 213)"
+                  //     : undefined,
+                  //transition: "transform 400ms ease, box-shadow 200ms ease",
                   borderColor: "white"
                 }}
                 className="hoverCard"
-                onMouseEnter={() => setHoveredId(pattern.id)}
-                onMouseLeave={() => setHoveredId(null)}
+                // onMouseEnter={() => setHoveredId(pattern.id)}
+                // onMouseLeave={() => setHoveredId(null)}
                 onClick={() => setExpandedPattern(pattern)}
               >
                 <Card.Section>
