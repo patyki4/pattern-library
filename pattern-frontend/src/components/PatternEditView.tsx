@@ -7,6 +7,7 @@ type PatternEditProps = {
     React.SetStateAction<Pattern | null>
   >;
   onSave: (pattern: Pattern) => void;
+  setDeleteTarget: (pattern: Pattern | null) => void;
 
   onCancel: () => void;
 }
@@ -15,6 +16,7 @@ export function PatternEditView({
   pattern,
   setPattern,
   onSave,
+  setDeleteTarget,
   onCancel
 }: PatternEditProps) {
 
@@ -66,34 +68,53 @@ return (
             })
         }
         />
-
         <Group
             justify="flex-end"
-            style={{
-                flexShrink: 0,
-                position: "sticky",
-                bottom: 0,
+                style={{
+                    flexShrink: 0,
+                    position: "sticky",
+                    bottom: 0,
 
-                padding: "6px 0",
-                background: "transparent",
-                // backdropFilter: "blur(6px)",
-                // WebkitBackdropFilter: "blur(6px)",
+                    paddingTop: "10px",
+                    backgroundColor: "var(--mantine-color-body)",
+                    justifyContent: "space-between",
+                    marginTop: "auto",
 
-                // borderTop: "1px solid rgba(60, 96, 123, 0.08)",
-                // boxShadow: "0 -6px 18px rgba(0,0,0,0.08)",
-            }}>
-            <Button variant="default" onClick={() => onCancel()}>
-                cancel
-            </Button>
+                    // backdropFilter: "blur(6px)",
+                    // WebkitBackdropFilter: "blur(6px)",
 
-            <Button
-                color="indigo"
-                onClick={() => {
-                if (!pattern) return;
-                onSave(pattern);
+                    borderTop: "3px solid rgba(134, 175, 206, 0.08)",
+                    //boxShadow: "0 -6px 18px rgba(0,0,0,0.08)",
+
+                    display: "flex",
+                    width: "100%",
                 }}>
-                save
-            </Button>
+                <Button color="red" onClick={() => setDeleteTarget(pattern)}>
+                    delete
+                </Button>
+            <Group
+                justify="flex-end"
+                style={{
+                    // flexShrink: 0,
+                    // position: "sticky",
+                    // bottom: 0,
+
+                    // padding: "6px 0",
+                    // background: "transparent",
+                }}>
+                <Button variant="default" onClick={() => onCancel()}>
+                    cancel
+                </Button>
+
+                <Button
+                    color="indigo"
+                    onClick={() => {
+                    if (!pattern) return;
+                    onSave(pattern);
+                    }}>
+                    save
+                </Button>
+            </Group>
         </Group>
     </div>
 )}

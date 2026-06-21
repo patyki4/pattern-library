@@ -20,6 +20,7 @@ type PatternModalProps = {
 
   opened: boolean;
   onClose: () => void;
+  setDeleteTarget: (pattern: Pattern | null) => void;
   sideBySide: boolean;
   setSideBySide: React.Dispatch<
     React.SetStateAction<boolean>
@@ -39,6 +40,7 @@ export function PatternModal({
   onSave,
   opened,
   onClose,
+  setDeleteTarget,
   sideBySide,
   setSideBySide,
 }: PatternModalProps) {
@@ -56,7 +58,8 @@ return (
         centered
         styles={{
             content: {
-            overflow: "hidden",
+                //overflow: "hidden",
+                paddingBottom: 0,
             },
         }}
     >
@@ -81,6 +84,7 @@ return (
                         onSave={onSave}
                         onCancel={() => {setPattern(null);
                             setIsEditing(false)}}
+                        setDeleteTarget={setDeleteTarget}
                     />
                 ) : (
                     <PatternDefaultView

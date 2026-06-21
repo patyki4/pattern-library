@@ -67,37 +67,12 @@ export async function updatePattern(pattern: Pattern): Promise<Pattern> {
   return await res.json();
 }
 
+export async function deletePattern(id: number) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
 
-// old stuff from app.tsx
-// const createPattern = async () => {
-//     const response = await fetch(
-//       "http://127.0.0.1:8000/patterns",
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           title,
-//           content,
-//           definitions,
-//           craft_type,
-//           difficulty,
-//           tags: tagsInput
-//           .split(",")
-//           .map((t) => t.trim())
-//           .filter(Boolean),
-//         }),
-//       }
-//     );
-
-//     if (response.ok) {
-//       setTitle("");
-//       setContent("");
-//       setDefinitions("");
-//       setCraftType("");
-//       setDifficulty("");
-//       loadPatterns();
-//       setTagsInput("");
-//     }
-//   };
+  if (!res.ok) {
+    throw new Error("Failed to delete pattern");
+  }
+}

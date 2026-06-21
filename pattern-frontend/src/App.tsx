@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Pattern } from "./types/Pattern";
-import { getPatterns, createPattern, updatePattern } from "./api/patterns";
+import { getPatterns, createPattern, updatePattern, deletePattern } from "./api/pattern_handler";
 import { PatternModal } from "./components/PatternModal";
 import "./App.css"
 import {
@@ -28,17 +28,16 @@ function App() {
   const [craftType, setCraftType] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [tagsInput, setTagsInput] = useState("");
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  //const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
   const [draftPattern, setDraftPattern] = useState<Pattern | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [sideBySide, setSideBySide] = useState(false);
   //const [pinThumbnail, setPinThumbnail] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Pattern | null>(null);
 
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-  
-  setColorScheme(colorScheme === "dark" ? "light" : "dark");
 
   const toggleTheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
@@ -77,6 +76,15 @@ function App() {
     );
     setExpandedPattern(saved);
     setDraftPattern(null);
+    setIsEditing(false);
+  };
+
+  const handleDeletePattern = async (id: number) => {
+    await deletePattern(id);
+
+    setPatterns((prev) => prev.filter((p) => p.id !== id));
+
+    setExpandedPattern(null);
     setIsEditing(false);
   };
 
@@ -202,9 +210,46 @@ function App() {
           setExpandedPattern(null);
           setIsEditing(false);
         }}
+        setDeleteTarget={setDeleteTarget}
         sideBySide={sideBySide}
         setSideBySide={setSideBySide}
       />
+
+      <Modal
+        opened={deleteTarget !== null}
+        onClose={() => setDeleteTarget(null)}
+        centered
+        size="auto"
+        zIndex={999}
+      >
+        {deleteTarget && (
+          <>
+            <Text>
+              delete{" "}
+              "<strong>{deleteTarget.title}</strong>"?
+            </Text>
+
+            <Group justify="flex-end" mt="xl">
+              <Button
+                variant="default"
+                onClick={() => setDeleteTarget(null)}
+              >
+                cancel
+              </Button>
+
+              <Button
+                color="red"
+                onClick={async () => {
+                  await handleDeletePattern(deleteTarget.id);
+                  setDeleteTarget(null);
+                }}
+              >
+                delete
+              </Button>
+            </Group>
+          </>
+        )}
+      </Modal>
 
       <Card shadow="sm" padding="md" radius="md" color="blue">
         <Title order={3}>

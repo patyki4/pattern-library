@@ -45,13 +45,14 @@ return (
                     position: "sticky",
                     bottom: 0,
 
-                    padding: "6px 0",
-                    background: "transparent",
-                    backdropFilter: "blur(6px)",
-                    WebkitBackdropFilter: "blur(6px)",
+                    paddingTop: "10px",
+                    backgroundColor: "var(--mantine-color-body)",
+                    // background: "transparent",
+                    // backdropFilter: "blur(6px)",
+                    // WebkitBackdropFilter: "blur(6px)",
 
-                    borderTop: "1px solid rgba(60, 96, 123, 0.08)",
-                    boxShadow: "0 -6px 18px rgba(0,0,0,0.08)",
+                    borderTop: "3px solid rgba(134, 175, 206, 0.08)",
+                    //boxShadow: "-6 -6px 6px rgba(189, 205, 240, 0.08)",
 
                     display: "flex",
                     justifyContent: "space-between",
