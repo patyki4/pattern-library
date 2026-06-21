@@ -1,0 +1,76 @@
+import { Card, Image, Text } from "@mantine/core";
+import type { Pattern } from "../types/Pattern";
+
+type PatternGridProps = {
+  patterns: Pattern[];
+  onSelectPattern: (pattern: Pattern) => void;
+};
+
+function PatternGrid({ patterns, onSelectPattern }: PatternGridProps) {
+    const numCols = 3;
+
+    const rows = Array.from(
+        { length: Math.ceil(patterns.length / numCols) },
+        (_, i) => patterns.slice(i * numCols, i * numCols + numCols)
+    );
+
+return (
+    <div style={{ width: "95vw", overflow: "visible", marginTop: 50,  marginBottom: "5rem"  }}>
+        {rows.map((row, rowIndex) => (
+            <div
+                key={rowIndex}
+                style={{
+                display: "flex",
+                marginBottom: 20,
+                alignItems: "center",
+                
+                }}
+            >
+                {row.map((pattern, index) => (
+                <Card
+                    p="lg"
+                    key={pattern.id ?? index}
+                    style={{
+                    width: "clamp(160px, 30vw, 500px)",
+                    height: "clamp(160px, 40vh, 400px)",
+                    flex: "0 0 auto",
+                    overflow: "hidden",
+                    display: "inline-block",
+                    marginLeft: index === 0 ? 0 : -20,
+                    marginBottom: -40,
+                    position: "relative",
+                    padding:"sm"
+                    }}
+                    className="hoverCard"
+                    // onMouseEnter={() => setHoveredId(pattern.id)}
+                    // onMouseLeave={() => setHoveredId(null)}
+                    onClick={() => onSelectPattern(pattern)}
+                >
+                    <Card.Section>
+                        <Image 
+                            src={pattern.thumbnailUrl}
+                            height={150}
+                            radius={5}
+                            fallbackSrc="https://i.pinimg.com/736x/87/ec/7f/87ec7f572db6bfba36569f5cb3b8d468.jpg"
+                        />
+                    </Card.Section>
+                    <Card.Section>
+                        <Text>
+                            <strong>{pattern.title}</strong>
+                        </Text>
+                    </Card.Section>
+                    <Card.Section>
+                        <Text lineClamp={4}>
+                            {pattern.content}
+                        </Text>
+                    </Card.Section>
+                </Card>
+                ))}
+            </div>
+            ))
+        }
+        </div>
+    );
+}
+
+export default PatternGrid;

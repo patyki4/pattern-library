@@ -186,9 +186,11 @@
 .hoverCard {
   transform: translateY(0) scale(1);
   transition: transform 200ms ease, box-shadow 200ms ease;
+  border: "black";
+  box-shadow: -6px -6px 40px rgb(0, 0, 0);
 }
 
 .hoverCard:hover {
   transform: translateY(-6px) scale(1.04);
-  box-shadow: -6px -6px 40px rgba(131, 168, 213, 0.44);
+  box-shadow: -6px -6px 40px rgba(255, 255, 255, 0.44);
 }
