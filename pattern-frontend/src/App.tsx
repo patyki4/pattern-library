@@ -221,11 +221,12 @@ function App() {
         centered
         size="auto"
         zIndex={999}
+        withCloseButton={false}
       >
         {deleteTarget && (
           <>
             <Text>
-              delete{" "}
+              Delete{" "}
               "<strong>{deleteTarget.title}</strong>"?
             </Text>
 

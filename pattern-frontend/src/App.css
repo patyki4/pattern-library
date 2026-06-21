@@ -190,5 +190,5 @@
 
 .hoverCard:hover {
   transform: translateY(-6px) scale(1.04);
-  box-shadow: 0 12px 30px rgb(131, 168, 213);
+  box-shadow: -6px -6px 40px rgba(131, 168, 213, 0.44);
 }
