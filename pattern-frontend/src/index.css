@@ -64,14 +64,15 @@
 
 body {
   margin: 0;
-  background: #1a1b1e;
+  background-color: var(--mantine-color-body);
+  color: var(--mantine-color-text);
 }
 
 h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: var(--mantine-color-text);
 }
 
 h1 {

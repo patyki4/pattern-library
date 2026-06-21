@@ -7,6 +7,7 @@ import { PatternModal } from "../components/PatternModal";
 import "../App.css"
 import {
   Button,
+  Box,
   Text,
   TextInput,
   Textarea,
@@ -22,6 +23,7 @@ import {
 function PatternLibraryPage() {
   const [search, setSearch] = useState("");
   const [patterns, setPatterns] = useState<Pattern[]>([]);
+
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
   const [draftPattern, setDraftPattern] = useState<Pattern | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -78,38 +80,52 @@ function PatternLibraryPage() {
 
   useEffect(() => {
     getPatterns().then(setPatterns);
-  }, [search]);
+  }, []);
 
-  useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-mantine-color-scheme",
-      colorScheme
+  const visiblePatterns = patterns.filter((pattern) => {
+    const query = search.toLowerCase();
+
+    return (
+        pattern.title.toLowerCase().includes(query) ||
+        pattern.content.toLowerCase().includes(query) ||
+        pattern.craftType.toLowerCase().includes(query) ||
+        (pattern.difficulty?.toLowerCase() ?? "").includes(query) ||
+        pattern.tags.some((tag) => tag.toLowerCase().includes(query))
     );
-  }, [colorScheme]);
+  });
   
   return (
-    <div style={{overflowX : "hidden"}}> 
-      <div style={{ width: "100%", padding: "var(--mantine-spacing-sm)"}}>
-        <Title order={1}>
-          Pattern Library
-        </Title>
-        <ActionIcon
-          onClick={toggleTheme}
-          variant="subtle"
-          size="lg"
+    <Box
+        style={{
+            minHeight: "100vh",
+            overflowX: "hidden",
+            backgroundColor: "var(--mantine-color-body)",
+        }}
         >
-          {colorScheme === "dark" ? "☀️" : "🌙"}
-        </ActionIcon>
+      <div style={{ width: "100%", padding: "var(--mantine-spacing-sm)"}}>
+        <Group
+            justify="flex-end">
+            <Title order={1}>
+            Pattern Library
+            </Title>
+            <ActionIcon
+            onClick={toggleTheme}
+            variant="subtle"
+            size="lg"
+            >
+            {colorScheme === "dark" ? "☀️" : "🌙"}
+            </ActionIcon>
+        </Group>
         <section style={{ marginBottom: "1rem" }}></section>
           <TextInput
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search patterns..."
+            placeholder="search patterns..."
             style={{ marginBottom: "1rem" }}
           />
       </div>
         <PatternGrid
-            patterns={patterns}
+            patterns={visiblePatterns}
             onSelectPattern={setExpandedPattern}
             />
 
@@ -168,7 +184,7 @@ function PatternLibraryPage() {
           </>
         )}
       </Modal>
-    </div>
+    </Box>
   );
 }
 

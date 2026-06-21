@@ -9,7 +9,7 @@ import App from './App'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <MantineProvider
-      forceColorScheme="dark"
+      defaultColorScheme="dark"
       theme={{
         primaryColor: "indigo",
       }}
