@@ -85,7 +85,7 @@ class PatternResponse(BaseModel):
 
     thumbnailUrl: str | None
 
-    tags: list[TagResponse]
+    tags: list[str] = []
 
     model_config = {
         "from_attributes": True
@@ -119,6 +119,7 @@ def edit_pattern(
         pattern.craftType,
         pattern.difficulty,
         pattern.thumbnailUrl,
+        pattern.tags
     )
 
     if updated_pattern is None:
@@ -132,7 +133,7 @@ def edit_pattern(
     craftType=updated_pattern.craft_type,
     difficulty=updated_pattern.difficulty,
     thumbnailUrl=updated_pattern.thumbnail_url,
-    tags=updated_pattern.tags,
+    tags=[tag.name for tag in updated_pattern.tags]
 )
 
 @app.delete("/patterns/{pattern_id}")

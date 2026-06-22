@@ -39,6 +39,7 @@ def update_pattern(
     craftType,
     difficulty,
     thumbnailUrl,
+    tags
 ):
     pattern = db.get(Pattern, pattern_id)
 
@@ -51,6 +52,14 @@ def update_pattern(
     pattern.craft_type = craftType
     pattern.difficulty = difficulty
     pattern.thumbnail_url = thumbnailUrl
+    pattern.tags.clear()
+
+    for tag_name in tags:
+        tag = get_or_create_tag(
+            db,
+            tag_name.strip().lower(),
+        )
+        pattern.tags.append(tag)
 
     db.commit()
     db.refresh(pattern)

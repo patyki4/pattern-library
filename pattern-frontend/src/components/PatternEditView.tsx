@@ -1,3 +1,4 @@
+import { useState, useEffect} from "react";
 import { Modal, Title, Text, Textarea, TextInput, Button, Group } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 
@@ -19,6 +20,14 @@ export function PatternEditView({
   setDeleteTarget,
   onCancel
 }: PatternEditProps) {
+    
+const [tagsInput, setTagsInput] = useState(
+  pattern.tags?.join(", ") ?? ""
+);
+
+useEffect(() => {
+  setTagsInput(pattern.tags?.join(", ") ?? "");
+}, [pattern.id]);
 
 return (
     <div style={{ display: "flex", flexDirection: "column", height: "80vh", gap: 12 }}>
@@ -47,15 +56,9 @@ return (
         />
 
         <TextInput
-        label="tags"
-        value={pattern.tags.join(", ") ?? ""}
-        onChange={(e) =>
-            setPattern({
-            ...pattern,
-            tags: e.currentTarget.value.split(",").map((t) => t.trim())
-            .filter(Boolean),
-            })
-        }
+            label="tags"
+            value={tagsInput}
+            onChange={(e) => setTagsInput(e.currentTarget.value)}
         />
 
         <TextInput
@@ -110,7 +113,13 @@ return (
                     color="indigo"
                     onClick={() => {
                     if (!pattern) return;
-                    onSave(pattern);
+                    onSave({
+                        ...pattern,
+                        tags: tagsInput
+                            .split(",")
+                            .map((t) => t.trim())
+                            .filter(Boolean),
+                        });
                     }}>
                     save
                 </Button>
@@ -118,3 +127,5 @@ return (
         </Group>
     </div>
 )}
+
+export default PatternEditView;

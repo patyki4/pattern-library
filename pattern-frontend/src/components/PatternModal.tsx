@@ -96,3 +96,5 @@ return (
         </div>
     </Modal>
 )}
+
+export default PatternModal;

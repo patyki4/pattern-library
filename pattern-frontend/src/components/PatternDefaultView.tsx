@@ -32,6 +32,12 @@ return (
             )}
                 
             <Title order={2}>{pattern.title}</Title>
+            <Text>
+                {pattern.difficulty} difficulty, {pattern.craftType}
+            </Text>
+            <Text>
+                tags: {pattern.tags?.length ? pattern.tags.join(", ") : "none"}
+            </Text>
             <Text style={{ whiteSpace: "pre-wrap" }}>
                 {pattern.content}
             </Text> 
@@ -71,3 +77,5 @@ return (
             </Group>
     </div>
 )}
+
+export default PatternDefaultView;

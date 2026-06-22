@@ -120,7 +120,7 @@ function PatternLibraryPage() {
                 </Title>
                 <Group justify="flex-end" gap="sm">
                     <Text>
-                        # cards:
+                        # cards/row:
                     </Text>
                     <Slider 
                         value={sliderValue} 
