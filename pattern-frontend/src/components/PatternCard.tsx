@@ -3,25 +3,19 @@ import type { Pattern } from "../types/Pattern";
 
 type PatternCardProps = {
   pattern: Pattern;
-  index: number;
+  //index: number;
+  width: string;
   onClick: () => void;
 };
 
-function PatternCard({ pattern, index, onClick }: PatternCardProps) {
+function PatternCard({ pattern, width, onClick }: PatternCardProps) {
   return (
     <Card
         p="lg"
-        key={pattern.id ?? index}
         style={{
-        width: "clamp(160px, 30vw, 500px)",
+        width: width,
         height: "clamp(160px, 40vh, 400px)",
-        flex: "0 0 auto",
-        overflow: "hidden",
-        display: "inline-block",
-        marginLeft: index === 0 ? 0 : -20,
-        marginBottom: -(index % 3)*25-40,
-        position: "relative",
-        padding:"sm"
+        
         }}
         className="hoverCard"
         // onMouseEnter={() => setHoveredId(pattern.id)}

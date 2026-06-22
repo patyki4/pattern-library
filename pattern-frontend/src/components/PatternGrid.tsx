@@ -3,24 +3,25 @@ import PatternCard from "./PatternCard";
 
 type PatternGridProps = {
   patterns: Pattern[];
+  cardsPerRow: number;
   onSelectPattern: (pattern: Pattern) => void;
 };
 
-function PatternGrid({ patterns, onSelectPattern }: PatternGridProps) {
-    const numCols = 3;
+
+function PatternGrid({ patterns, cardsPerRow, onSelectPattern }: PatternGridProps) {
 
     const rows = Array.from(
-        { length: Math.ceil(patterns.length / numCols) },
-        (_, i) => patterns.slice(i * numCols, i * numCols + numCols)
+        { length: Math.ceil(patterns.length / cardsPerRow) },
+        (_, i) => patterns.slice(i * cardsPerRow, i * cardsPerRow + cardsPerRow)
     );
+
+    const cardWidth = `calc(${85 / cardsPerRow}vw)`;
 
 return (
     <div
         style={{
             width: "100%",
             boxSizing: "border-box",
-            paddingLeft: "2rem",
-            paddingRight: "2rem",
             overflow: "visible",
             marginTop: 50,
             marginBottom: "5rem",
@@ -30,19 +31,30 @@ return (
             <div
                 key={rowIndex}
                 style={{
-                display: "flex",
-                marginBottom: 20,
-                alignItems: "center",
-                
+                    display: "flex",
+                    marginBottom: 20,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "visible"
                 }}
             >
                 {row.map((pattern, index) => (
-                    <PatternCard
+                    <div
                         key={pattern.id ?? index}
-                        pattern={pattern}
-                        index={index}
-                        onClick={() => onSelectPattern(pattern)}
-                    />
+                        style={{
+                            overflow: "visible",
+                            marginLeft: index === 0 ? 0 : -20,
+                            marginBottom: -index*25-40,
+                            position: "relative",
+                        }}
+                    >
+                        <PatternCard
+                            pattern={pattern}
+                            //index={index}
+                            width={cardWidth}
+                            onClick={() => onSelectPattern(pattern)}
+                        />
+                    </div>
                 ))}
             </div>
             ))

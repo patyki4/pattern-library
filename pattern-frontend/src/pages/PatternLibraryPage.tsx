@@ -16,6 +16,7 @@ import {
   Title,
   Image,
   Modal,
+  Slider,
   useMantineColorScheme,
   ActionIcon
 } from "@mantine/core";
@@ -29,6 +30,8 @@ function PatternLibraryPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [sideBySide, setSideBySide] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Pattern | null>(null);
+
+  const [sliderValue, setSliderValue] = useState(4);
 
   const { colorScheme, setColorScheme } = useMantineColorScheme();
 
@@ -108,21 +111,23 @@ function PatternLibraryPage() {
                     display: "grid",
                     gridTemplateColumns: "1fr auto 1fr",
                     alignItems: "center",
+                    width: "100%",
                 }}
                 >
                 <div />
                 <Title order={1}>
                     Pattern Library
                 </Title>
-                <div style={{justifySelf: "end"}}>
+                <Group justify="flex-end" gap="sm">
+                    <Slider value={sliderValue} onChange={setSliderValue} min={3} max={6} step={1} w={100}/>
                     <ActionIcon
-                    onClick={toggleTheme}
-                    variant="light"
-                    size="lg"
-                    >
-                    {colorScheme === "dark" ? "☀️" : "🌙"}
+                        onClick={toggleTheme}
+                        variant="light"
+                        size="lg"
+                        >
+                        {colorScheme === "dark" ? "☀️" : "🌙"}
                     </ActionIcon>
-                </div>
+                </Group>
             </div>
         <section style={{ marginBottom: "1rem" }}></section>
           <TextInput
@@ -134,6 +139,7 @@ function PatternLibraryPage() {
       </div>
         <PatternGrid
             patterns={visiblePatterns}
+            cardsPerRow={sliderValue}
             onSelectPattern={setExpandedPattern}
             />
 
