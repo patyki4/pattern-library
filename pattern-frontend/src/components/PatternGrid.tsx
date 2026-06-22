@@ -1,4 +1,3 @@
-import { Card, Image, Text } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 import PatternCard from "./PatternCard";
 
@@ -16,7 +15,17 @@ function PatternGrid({ patterns, onSelectPattern }: PatternGridProps) {
     );
 
 return (
-    <div style={{ width: "95vw", overflow: "visible", marginTop: 50,  marginBottom: "5rem"  }}>
+    <div
+        style={{
+            width: "100%",
+            boxSizing: "border-box",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+            overflow: "visible",
+            marginTop: 50,
+            marginBottom: "5rem",
+        }}
+        >
         {rows.map((row, rowIndex) => (
             <div
                 key={rowIndex}

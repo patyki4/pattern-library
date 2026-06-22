@@ -19,7 +19,7 @@ function PatternCard({ pattern, index, onClick }: PatternCardProps) {
         overflow: "hidden",
         display: "inline-block",
         marginLeft: index === 0 ? 0 : -20,
-        marginBottom: -40,
+        marginBottom: -(index % 3)*25-40,
         position: "relative",
         padding:"sm"
         }}

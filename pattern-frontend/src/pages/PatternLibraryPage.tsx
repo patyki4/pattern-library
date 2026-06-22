@@ -102,20 +102,28 @@ function PatternLibraryPage() {
             backgroundColor: "var(--mantine-color-body)",
         }}
         >
-      <div style={{ width: "100%", padding: "var(--mantine-spacing-sm)"}}>
-        <Group
-            justify="flex-end">
-            <Title order={1}>
-            Pattern Library
-            </Title>
-            <ActionIcon
-            onClick={toggleTheme}
-            variant="subtle"
-            size="lg"
-            >
-            {colorScheme === "dark" ? "☀️" : "🌙"}
-            </ActionIcon>
-        </Group>
+        <div style={{ width: "100%", padding: "var(--mantine-spacing-sm)"}}>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr auto 1fr",
+                    alignItems: "center",
+                }}
+                >
+                <div />
+                <Title order={1}>
+                    Pattern Library
+                </Title>
+                <div style={{justifySelf: "end"}}>
+                    <ActionIcon
+                    onClick={toggleTheme}
+                    variant="light"
+                    size="lg"
+                    >
+                    {colorScheme === "dark" ? "☀️" : "🌙"}
+                    </ActionIcon>
+                </div>
+            </div>
         <section style={{ marginBottom: "1rem" }}></section>
           <TextInput
             value={search}

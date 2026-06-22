@@ -55,6 +55,10 @@ function PatternForm({ onSubmit }: PatternFormProps) {
             placeholder="pattern title"
             value={title}
             onChange={(e) => setTitle(e.currentTarget.value)}
+            style={{
+                width: "100%",
+                marginBottom: "1rem",
+            }}
             />
 
             <TextInput

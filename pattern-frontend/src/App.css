@@ -183,14 +183,22 @@
   }
 }
 
+:root[data-mantine-color-scheme="light"] {
+  --card-shadow: rgba(0, 0, 0, 0.597);
+}
+
+:root[data-mantine-color-scheme="dark"] {
+  --card-shadow: rgba(105, 137, 255, 0.428);
+}
+
 .hoverCard {
   transform: translateY(0) scale(1);
   transition: transform 200ms ease, box-shadow 200ms ease;
   border: "black";
-  box-shadow: -6px -6px 40px rgb(0, 0, 0);
+  box-shadow: -6px -6px 40px rgba(0, 0, 0, 0.597);
 }
 
 .hoverCard:hover {
   transform: translateY(-6px) scale(1.04);
-  box-shadow: 0px 0px 50px 10px rgba(255, 255, 255, 0.278);
+  box-shadow: 0px 0px 40px 10px var(--card-shadow);
 }
