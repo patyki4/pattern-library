@@ -47,7 +47,7 @@ function PatternForm({ onSubmit }: PatternFormProps) {
 
     return (
         <Card shadow="sm" padding="md" radius="md" color="blue">
-            <Title order={3}>
+            <Title order={3} style={{marginBottom: '1rem'}}>
             add pattern
             </Title>
 

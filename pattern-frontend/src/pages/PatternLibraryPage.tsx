@@ -119,7 +119,20 @@ function PatternLibraryPage() {
                     Pattern Library
                 </Title>
                 <Group justify="flex-end" gap="sm">
-                    <Slider value={sliderValue} onChange={setSliderValue} min={3} max={6} step={1} w={100}/>
+                    <Text>
+                        # cards:
+                    </Text>
+                    <Slider 
+                        value={sliderValue} 
+                        onChange={setSliderValue} 
+                        min={3} max={6} 
+                        step={1} w={100}
+                        marks={[
+                            { value: 3, label: '3' },
+                            { value: 4, label: '4' },
+                            { value: 5, label: '5' },
+                            { value: 6, label: '6' },
+                        ]}/>
                     <ActionIcon
                         onClick={toggleTheme}
                         variant="light"
