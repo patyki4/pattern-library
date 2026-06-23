@@ -18,7 +18,7 @@ export async function getPatterns() {
     craftType: p.craftType,
     thumbnailUrl: p.thumbnailUrl,
     difficulty: p.difficulty,
-    tags: (p.tags ?? []).map((tag: any) => tag.name),
+    tags: p.tags ?? [],
     createdAt: p.createdAt ?? p.created_at,
   }));
 }

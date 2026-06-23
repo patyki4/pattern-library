@@ -11,12 +11,13 @@ import {
   Text,
   TextInput,
   Textarea,
-  Card,
   Group,
   Title,
   Image,
   Modal,
   Slider,
+  Collapse,
+  Chip,
   useMantineColorScheme,
   ActionIcon
 } from "@mantine/core";
@@ -29,11 +30,40 @@ function PatternLibraryPage() {
   const [draftPattern, setDraftPattern] = useState<Pattern | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [sideBySide, setSideBySide] = useState(false);
+
   const [deleteTarget, setDeleteTarget] = useState<Pattern | null>(null);
+
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   const [sliderValue, setSliderValue] = useState(4);
 
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const [showTags, setShowTags] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const allTags = patterns.flatMap((pattern) => [
+    ...(pattern.tags ?? []),
+    pattern.craftType,
+    pattern.difficulty,
+  ]);
+
+  const filterCounts = new Map<string, number>();
+
+  patterns.forEach((pattern) => {
+    const values = [
+        ...(pattern.tags ?? []),
+        pattern.craftType,
+        pattern.difficulty,
+    ].filter((value): value is string =>
+        typeof value === "string" && value.trim() !== ""
+    );
+
+    values.forEach((value) => {
+        filterCounts.set(value, (filterCounts.get(value) ?? 0) + 1);
+        });
+    });
+
+  const filterOptions = Array.from(filterCounts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(([value]) => value);
 
   const toggleTheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
@@ -82,19 +112,37 @@ function PatternLibraryPage() {
   };
 
   useEffect(() => {
-    getPatterns().then(setPatterns);
-  }, []);
+    getPatterns().then((data) => {
+        console.log(filterOptions);
+        setPatterns(data);
+    });
+    }, []);
 
   const visiblePatterns = patterns.filter((pattern) => {
     const query = search.toLowerCase();
 
-    return (
+    const patternFilterValues = [
+        ...(pattern.tags ?? []),
+        pattern.craftType,
+        pattern.difficulty,
+    ].filter((value): value is string =>
+        typeof value === "string" && value.trim() !== ""
+    );
+
+    const matchesSearch =
         pattern.title.toLowerCase().includes(query) ||
         pattern.content.toLowerCase().includes(query) ||
-        pattern.craftType.toLowerCase().includes(query) ||
-        (pattern.difficulty?.toLowerCase() ?? "").includes(query) ||
-        pattern.tags.some((tag) => tag.toLowerCase().includes(query))
-    );
+        patternFilterValues.some((value) =>
+        value.toLowerCase().includes(query)
+        );
+
+    const matchesFilters =
+        selectedTags.length === 0 ||
+        selectedTags.every((selected) =>
+        patternFilterValues.includes(selected)
+        );
+
+    return matchesSearch && matchesFilters;
   });
   
   return (
@@ -142,14 +190,34 @@ function PatternLibraryPage() {
                     </ActionIcon>
                 </Group>
             </div>
-        <section style={{ marginBottom: "1rem" }}></section>
-          <TextInput
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="search patterns..."
-            style={{ marginBottom: "1rem" }}
-          />
-      </div>
+            <section style={{ marginBottom: "1rem" }}></section>
+            <TextInput
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="search patterns..."
+                style={{ marginBottom: "1rem" }}
+            />
+            <Group gap="xs" mt="sm" wrap="wrap">
+                <Button
+                    variant="subtle"
+                    onClick={() => setShowTags((prev) => !prev)}
+                    >
+                    filter by:
+                </Button>
+
+                <Collapse expanded={showTags}>
+                    <Chip.Group multiple value={selectedTags} onChange={setSelectedTags}>
+                        <Group gap="xs" mt="sm">
+                        {filterOptions.map((tag) => (
+                            <Chip key={tag} value={tag}>
+                                {tag}
+                            </Chip>
+                            ))}
+                        </Group>
+                    </Chip.Group>
+                </Collapse>
+            </Group>
+        </div>
         <PatternGrid
             patterns={visiblePatterns}
             cardsPerRow={sliderValue}

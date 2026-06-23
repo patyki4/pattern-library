@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import { Modal, Title, Text, Textarea, TextInput, Button, Group } from "@mantine/core";
+import { Textarea, TextInput, Button, Group } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 
 type PatternEditProps = {
@@ -59,6 +59,28 @@ return (
             label="tags"
             value={tagsInput}
             onChange={(e) => setTagsInput(e.currentTarget.value)}
+        />
+
+        <TextInput
+            label="difficulty"
+            value={pattern.difficulty ?? "difficulty"}
+            onChange={(e) =>
+                setPattern({
+                ...pattern,
+                difficulty: e.currentTarget.value,
+                })
+            }
+        />
+
+        <TextInput
+            label="craft type"
+            value={pattern.craftType ?? "craft type"}
+            onChange={(e) =>
+                setPattern({
+                ...pattern,
+                craftType: e.currentTarget.value,
+                })
+            }
         />
 
         <TextInput

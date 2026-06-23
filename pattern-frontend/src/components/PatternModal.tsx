@@ -1,4 +1,4 @@
-import { Modal, Title, Text, Textarea, TextInput, Button, Group } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 import { PatternEditView } from "./PatternEditView";
 import { PatternDefaultView } from "./PatternDefaultView";

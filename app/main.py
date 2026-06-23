@@ -93,16 +93,27 @@ class PatternResponse(BaseModel):
 
 @app.post("/patterns")
 def add_pattern(pattern: PatternCreate, db: Session = Depends(get_db)):
-    return create_pattern(
-        db, 
-        pattern.title, 
+    new_pattern = create_pattern(
+        db,
+        pattern.title,
         pattern.content,
         pattern.definitions,
         pattern.craftType,
         pattern.difficulty,
         pattern.thumbnailUrl,
-        pattern.tags
-        )
+        pattern.tags,
+    )
+
+    return PatternResponse(
+        id=new_pattern.id,
+        title=new_pattern.title,
+        content=new_pattern.content,
+        definitions=new_pattern.definitions,
+        craftType=new_pattern.craft_type,
+        difficulty=new_pattern.difficulty,
+        thumbnailUrl=new_pattern.thumbnail_url,
+        tags=[tag.name for tag in new_pattern.tags],
+    )
 
 @app.put("/patterns/{pattern_id}")
 def edit_pattern(
@@ -174,7 +185,7 @@ def list_patterns(
             craftType=p.craft_type,
             difficulty=p.difficulty,
             thumbnailUrl=p.thumbnail_url,
-            tags=p.tags,
+            tags=[tag.name for tag in p.tags],
         )
         for p in patterns
     ]
