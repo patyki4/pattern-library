@@ -222,11 +222,17 @@ function PatternLibraryPage() {
                     >
                     filter by:
                 </Button>
-                    {showTags && filterOptions.map(({ value, count }) => (
-                        <Chip key={value} value={value}>
-                            {value} ({count})
-                        </Chip>
-                    ))}
+                    <Chip.Group
+                        multiple
+                        value={selectedTags}
+                        onChange={setSelectedTags}
+                        >
+                            {filterOptions.map(({ value, count }) => (
+                            <Chip key={value} value={value}>
+                                {value} ({count})
+                            </Chip>
+                            ))}
+                    </Chip.Group>
                 {/* {Array.from(filterCounts.entries())
                     .sort((a, b) => b[1] - a[1])
                     .map(([value, count]) => (
