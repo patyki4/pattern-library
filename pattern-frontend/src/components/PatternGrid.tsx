@@ -23,8 +23,8 @@ return (
             width: "100%",
             boxSizing: "border-box",
             overflow: "visible",
-            marginTop: 50,
-            marginBottom: "5rem",
+            marginTop: "1rem",
+            marginBottom: "6rem",
         }}
         >
         {rows.map((row, rowIndex) => (

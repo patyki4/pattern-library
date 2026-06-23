@@ -45,12 +45,24 @@ function PatternLibraryPage() {
     pattern.difficulty,
   ]);
 
-  const filterCounts = new Map<string, number>();
+  const craftTypes = Array.from(
+    new Set(
+        patterns
+        .map((pattern) => pattern.craftType)
+        .filter((value): value is string =>
+            typeof value === "string" && value.trim() !== ""
+        )
+    )
+    ).map((value) => ({
+    value,
+    count: patterns.filter((p) => p.craftType === value).length,
+    }));
 
-  patterns.forEach((pattern) => {
+    const filterCounts = new Map<string, number>();
+
+    patterns.forEach((pattern) => {
     const values = [
         ...(pattern.tags ?? []),
-        pattern.craftType,
         pattern.difficulty,
     ].filter((value): value is string =>
         typeof value === "string" && value.trim() !== ""
@@ -58,12 +70,17 @@ function PatternLibraryPage() {
 
     values.forEach((value) => {
         filterCounts.set(value, (filterCounts.get(value) ?? 0) + 1);
-        });
+    });
     });
 
-  const filterOptions = Array.from(filterCounts.entries())
+    const otherFilters = Array.from(filterCounts.entries())
     .sort((a, b) => b[1] - a[1])
-    .map(([value]) => value);
+    .map(([value, count]) => ({
+        value,
+        count,
+    }));
+
+    const filterOptions = [...craftTypes, ...otherFilters];
 
   const toggleTheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
@@ -175,6 +192,7 @@ function PatternLibraryPage() {
                         onChange={setSliderValue} 
                         min={3} max={6} 
                         step={1} w={100}
+                        label={null}
                         marks={[
                             { value: 3, label: '3' },
                             { value: 4, label: '4' },
@@ -199,23 +217,23 @@ function PatternLibraryPage() {
             />
             <Group gap="xs" mt="sm" wrap="wrap">
                 <Button
-                    variant="subtle"
+                    variant="light"
                     onClick={() => setShowTags((prev) => !prev)}
                     >
                     filter by:
                 </Button>
-
-                <Collapse expanded={showTags}>
-                    <Chip.Group multiple value={selectedTags} onChange={setSelectedTags}>
-                        <Group gap="xs" mt="sm">
-                        {filterOptions.map((tag) => (
-                            <Chip key={tag} value={tag}>
-                                {tag}
-                            </Chip>
-                            ))}
-                        </Group>
-                    </Chip.Group>
-                </Collapse>
+                    {showTags && filterOptions.map(({ value, count }) => (
+                        <Chip key={value} value={value}>
+                            {value} ({count})
+                        </Chip>
+                    ))}
+                {/* {Array.from(filterCounts.entries())
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([value, count]) => (
+                        <Chip key={value} value={value}>
+                        {value} ({count})
+                        </Chip>
+                    ))} */}
             </Group>
         </div>
         <PatternGrid
