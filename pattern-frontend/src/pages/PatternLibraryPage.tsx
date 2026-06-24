@@ -16,7 +16,6 @@ import {
   Image,
   Modal,
   Slider,
-  Collapse,
   Chip,
   useMantineColorScheme,
   ActionIcon
@@ -29,7 +28,7 @@ function PatternLibraryPage() {
   const [expandedPattern, setExpandedPattern] = useState<typeof patterns[number] | null>(null);
   const [draftPattern, setDraftPattern] = useState<Pattern | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [sideBySide, setSideBySide] = useState(false);
+  const [isWorking, setIsWorking] = useState(false);
 
   const [deleteTarget, setDeleteTarget] = useState<Pattern | null>(null);
 
@@ -39,11 +38,11 @@ function PatternLibraryPage() {
 
   const [showTags, setShowTags] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const allTags = patterns.flatMap((pattern) => [
-    ...(pattern.tags ?? []),
-    pattern.craftType,
-    pattern.difficulty,
-  ]);
+//   const allTags = patterns.flatMap((pattern) => [
+//     ...(pattern.tags ?? []),
+//     pattern.craftType,
+//     pattern.difficulty,
+//   ]);
 
   const craftTypes = Array.from(
     new Set(
@@ -128,6 +127,11 @@ function PatternLibraryPage() {
     setIsEditing(true);
   };
 
+  const toggleStartWorking = () => {
+    if (!expandedPattern) return;
+    setIsWorking(!isWorking);
+  };
+
   useEffect(() => {
     getPatterns().then((data) => {
         console.log(filterOptions);
@@ -201,7 +205,7 @@ function PatternLibraryPage() {
                         ]}/>
                     <ActionIcon
                         onClick={toggleTheme}
-                        variant="light"
+                        variant={colorScheme === "dark" ? "light" : "dark"}
                         size="lg"
                         >
                         {colorScheme === "dark" ? "☀️" : "🌙"}
@@ -227,7 +231,7 @@ function PatternLibraryPage() {
                         value={selectedTags}
                         onChange={setSelectedTags}
                         >
-                            {filterOptions.map(({ value, count }) => (
+                            {showTags && filterOptions.map(({ value, count }) => (
                             <Chip key={value} value={value}>
                                 {value} ({count})
                             </Chip>
@@ -261,10 +265,12 @@ function PatternLibraryPage() {
         onClose={() => {
           setExpandedPattern(null);
           setIsEditing(false);
+          setIsWorking(false);
         }}
         setDeleteTarget={setDeleteTarget}
-        sideBySide={sideBySide}
-        setSideBySide={setSideBySide}
+        isWorking={isWorking}
+        onWorking={toggleStartWorking}
+        setIsWorking={setIsWorking}
       />
 
       <Modal

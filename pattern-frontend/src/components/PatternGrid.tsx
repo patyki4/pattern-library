@@ -15,7 +15,7 @@ function PatternGrid({ patterns, cardsPerRow, onSelectPattern }: PatternGridProp
         (_, i) => patterns.slice(i * cardsPerRow, i * cardsPerRow + cardsPerRow)
     );
 
-    const cardWidth = `calc(${85 / cardsPerRow}vw)`;
+    const cardWidth = `calc(${(85 - 3 + cardsPerRow) / cardsPerRow}vw)`;
 
 return (
     <div
@@ -32,7 +32,7 @@ return (
                 key={rowIndex}
                 style={{
                     display: "flex",
-                    marginBottom: 20,
+                    marginBottom: 18,
                     alignItems: "center",
                     justifyContent: "center",
                     overflow: "visible"

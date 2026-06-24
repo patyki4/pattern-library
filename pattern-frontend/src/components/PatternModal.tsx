@@ -2,6 +2,7 @@ import { Modal } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 import { PatternEditView } from "./PatternEditView";
 import { PatternDefaultView } from "./PatternDefaultView";
+import { PatternWorkingView } from "./PatternWorkingView";
 
 type PatternModalProps = {
   pattern: Pattern | null;
@@ -20,15 +21,16 @@ type PatternModalProps = {
 
   opened: boolean;
   onClose: () => void;
+
   setDeleteTarget: (pattern: Pattern | null) => void;
-  sideBySide: boolean;
-  setSideBySide: React.Dispatch<
+
+  isWorking: boolean;
+  onWorking: () => void;
+  setIsWorking: React.Dispatch<
     React.SetStateAction<boolean>
   >;
-//   pinThumbnail: boolean;
-//   setPinThumbnail: React.Dispatch<
-//     React.SetStateAction<boolean>
-//   >;
+  //onExitWorking: () => void;
+
 };
 
 export function PatternModal({
@@ -41,8 +43,9 @@ export function PatternModal({
   opened,
   onClose,
   setDeleteTarget,
-  sideBySide,
-  setSideBySide,
+  isWorking,
+  onWorking,
+  //onExitWorking,
 }: PatternModalProps) {
     if (!pattern) {
         return null;
@@ -86,10 +89,17 @@ return (
                             setIsEditing(false)}}
                         setDeleteTarget={setDeleteTarget}
                     />
+                ) : isWorking ? (
+                    <PatternWorkingView
+                        pattern={pattern}
+                        //onExit={onExitWorking}
+                        onExit={onWorking}
+                    />
                 ) : (
                     <PatternDefaultView
                         pattern={pattern}
                         onEdit={onEdit}
+                        onWorking={onWorking}
                         onClose={onClose}
                     />)}
             </div>

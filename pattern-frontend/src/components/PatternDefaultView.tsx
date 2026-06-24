@@ -4,12 +4,14 @@ import type { Pattern } from "../types/Pattern";
 type PatternDefaultProps = {
   pattern: Pattern;
   onEdit: () => void;
+  onWorking: () => void;
   onClose: () => void;
 }
 
 export function PatternDefaultView({
   pattern,
   onEdit,
+  onWorking,
   onClose
 }: PatternDefaultProps) {
 
@@ -65,12 +67,20 @@ return (
                     width: "100%",
                 }}
             >
-                <Button
-                    color="indigo"
-                    onClick={onEdit}
-                >
-                    edit
-                </Button>
+                <Group>
+                    <Button
+                        color="indigo"
+                        onClick={onEdit}
+                    >
+                        edit
+                    </Button>
+                    <Button
+                        color="indigo"
+                        onClick={onWorking}
+                    >
+                        working mode
+                    </Button>
+                </Group>
                 <Button variant="subtle" color="gray" onClick={onClose}>
                     close
                 </Button>
