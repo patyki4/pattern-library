@@ -184,21 +184,29 @@
 }
 
 :root[data-mantine-color-scheme="light"] {
-  --card-shadow: rgba(0, 0, 0, 0.597);
+  --card-shadow: rgba(0, 0, 0, 0.43);
 }
 
 :root[data-mantine-color-scheme="dark"] {
   --card-shadow: rgba(105, 137, 255, 0.428);
 }
 
+:root[data-mantine-color-scheme="dark"] {
+  --box-shadow: 0px 0px 40px 10px rgba(105, 138, 255, 0.28);
+}
+
+:root[data-mantine-color-scheme="light"] {
+  --box-shadow: 0px 20px 40px 10px rgba(0, 0, 0, 0.43);
+}
+
 .hoverCard {
   transform: translateY(0) scale(1);
   transition: transform 200ms ease, box-shadow 200ms ease;
   border: "black";
-  box-shadow: -6px -6px 40px rgba(0, 0, 0, 0.597);
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.597);
 }
 
 .hoverCard:hover {
   transform: translateY(-6px) scale(1.04);
-  box-shadow: 0px 0px 40px 10px var(--card-shadow);
+  box-shadow: var(--box-shadow)/* 0px 0px 40px 10px var(--card-shadow); */
 }

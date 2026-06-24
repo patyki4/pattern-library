@@ -19,7 +19,7 @@ type PatternModalProps = {
 
   onSave: (pattern: Pattern) => void;
 
-  opened: boolean;
+  //opened: boolean;
   onClose: () => void;
 
   setDeleteTarget: (pattern: Pattern | null) => void;
@@ -40,7 +40,7 @@ export function PatternModal({
   onEdit,
   setPattern,
   onSave,
-  opened,
+  //opened,
   onClose,
   setDeleteTarget,
   isWorking,

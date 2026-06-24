@@ -1,4 +1,4 @@
-import { Modal, Title, Text, Textarea, TextInput, Button, Group } from "@mantine/core";
+import { Title, Text, Button, Group } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 
 type PatternDefaultProps = {
@@ -69,19 +69,19 @@ return (
             >
                 <Group>
                     <Button
-                        color="indigo"
+                        variant="gradient"
                         onClick={onEdit}
                     >
                         edit
                     </Button>
                     <Button
-                        color="indigo"
+                        variant="light"
                         onClick={onWorking}
                     >
-                        working mode
+                        enter working mode
                     </Button>
                 </Group>
-                <Button variant="subtle" color="gray" onClick={onClose}>
+                <Button variant="subtle" onClick={onClose}>
                     close
                 </Button>
             </Group>

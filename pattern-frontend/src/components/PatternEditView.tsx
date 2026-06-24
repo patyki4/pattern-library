@@ -132,7 +132,7 @@ return (
                 </Button>
 
                 <Button
-                    color="indigo"
+                    variant="gradient"
                     onClick={() => {
                     if (!pattern) return;
                     onSave({

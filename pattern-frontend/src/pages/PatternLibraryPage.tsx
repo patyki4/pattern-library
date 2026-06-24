@@ -261,7 +261,7 @@ function PatternLibraryPage() {
         setIsEditing={setIsEditing}
         setPattern={setDraftPattern}
         onSave={handleUpdatePattern}
-        opened={expandedPattern !== null}
+        //opened={expandedPattern !== null}
         onClose={() => {
           setExpandedPattern(null);
           setIsEditing(false);

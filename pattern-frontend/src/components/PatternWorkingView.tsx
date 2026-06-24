@@ -1,5 +1,5 @@
-import { useState, useEffect} from "react";
-import { Box, Title, Text, Textarea, TextInput, Button, Group } from "@mantine/core";
+import { useState } from "react";
+import { Box, Title, Text, Button, Group } from "@mantine/core";
 import type { Pattern } from "../types/Pattern";
 
 type PatternWorkingProps = {
