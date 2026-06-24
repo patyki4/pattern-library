@@ -122,7 +122,7 @@ function PatternForm({ onSubmit }: PatternFormProps) {
             }}
             />
 
-            <button onClick={handleSubmit}>
+            <button onClick={handleSubmit} disabled={title.trim() === "" || content.trim() === ""}>
             save pattern
             </button>
         </Card>

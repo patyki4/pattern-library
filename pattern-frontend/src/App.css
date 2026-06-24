@@ -183,13 +183,13 @@
   }
 }
 
-:root[data-mantine-color-scheme="light"] {
+/* :root[data-mantine-color-scheme="light"] {
   --card-shadow: rgba(0, 0, 0, 0.43);
 }
 
 :root[data-mantine-color-scheme="dark"] {
   --card-shadow: rgba(105, 137, 255, 0.428);
-}
+} */
 
 :root[data-mantine-color-scheme="dark"] {
   --box-shadow: 0px 0px 40px 10px rgba(105, 138, 255, 0.28);
