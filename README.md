@@ -10,7 +10,12 @@
 
 <!-- Card View -->
 ### pattern card view:
-<img width="1144" height="753" alt="Screenshot 2026-06-22 at 5 20 01 AM" src="https://github.com/user-attachments/assets/66a2f3f8-6631-4b60-ba4e-8960c8e55114" />
+<img width="1127" height="753" alt="Screenshot 2026-06-24 at 1 23 29 PM" src="https://github.com/user-attachments/assets/81716157-9f6d-498c-8fdc-b1999e435c95" />
+
+
+<!-- Working View -->
+### working view with row tracker:
+<img width="1114" height="753" alt="Screenshot 2026-06-24 at 1 22 22 PM" src="https://github.com/user-attachments/assets/3bddac27-f679-4fbb-92f5-607d1e8959fd" />
 
 <!-- Add Pattern View -->
 ### adding new patterns:
@@ -18,7 +23,7 @@
 
 <!-- Card Editing View -->
 ### editing a pattern:
-<img width="1105" height="753" alt="Screenshot 2026-06-23 at 5 13 59 AM" src="https://github.com/user-attachments/assets/51bb689f-7b9b-428f-9edf-904ba016cb5a" />
+<img width="1102" height="752" alt="Screenshot 2026-06-24 at 1 25 42 PM" src="https://github.com/user-attachments/assets/0119f236-890d-45c8-a4d8-982dfacc69bb" />
 
 
 ### Usage: TO BE UPDATED whenever i go wrangle that part of docker images idk
